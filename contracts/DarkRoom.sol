@@ -11,7 +11,7 @@ contract DarkRoom {
   uint yes = 0;
   uint no = 0;
 
-  event NewVote(uint totalYes, uint totalNo);
+  event NewVote(address lVoter, uint totalYes, uint totalNo);
 
   function vote(bool option) public {
     Voter storage voter = voters[msg.sender];
@@ -26,16 +26,16 @@ contract DarkRoom {
     voter.vote = option;
     voter.hasVoted = true;
 
-    emit NewVote(yes, no);
+    emit NewVote(msg.sender, yes, no);
   }
 
   function getResults() public view returns (uint, uint) {
     return (yes, no);
   }
 
-  function getVoter() public view returns (bool, bool) {
+  function getVoter() public view returns (address, bool, bool) {
     Voter memory voter = voters[msg.sender];
 
-    return (voter.vote, voter.hasVoted);
+    return (msg.sender, voter.vote, voter.hasVoted);
   }
 }

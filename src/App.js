@@ -10,7 +10,8 @@ import './App.css'
 class App extends Component {
   state = {
     YES: 0,
-    NO: 0
+    NO: 0,
+    shouldDisableVotes: true,
   };
 
   darkRoomInstance = null;
@@ -19,6 +20,7 @@ class App extends Component {
 
   vote = (option) => () => {
     console.log('voting', option);
+    this.setState({ shouldDisableVotes: true });
     this.darkRoomInstance.vote(option, {from: this.account})
       .then((result) => {
         console.log('vote', result);
@@ -28,7 +30,6 @@ class App extends Component {
   onNewVote = (error, result) => {
     console.log(error);
     if (!error) {
-      console.log(result);
       this.setState({ YES: result.args.totalYes.toNumber() });
       this.setState({ NO: result.args.totalNo.toNumber() });
     }
@@ -63,14 +64,28 @@ class App extends Component {
         this.darkRoomInstance = instance
         this.account = accounts[0];
         console.log(accounts);
+        console.log(this.account);
 
         this.darkRoomInstance.NewVote(this.onNewVote);
 
-        return this.darkRoomInstance.getVoter.call(this.account)
-      }).then((result) => {
-        console.log('voter', result);
-        return this.darkRoomInstance.getResults.call(this.account)
-      }).then((result) => {
+        return this.darkRoomInstance.getVoter({from: this.account});
+
+      }).then(result => {
+        console.log(result)
+
+        const [_,myVote, hasVoted] = result;
+
+        console.log('myVote', myVote);
+        console.log('hasVoted', hasVoted);
+
+        this.setState({ shouldDisableVotes: hasVoted });
+
+        if (hasVoted) {
+          this.setState({ myVote })
+        }
+
+        return this.darkRoomInstance.getResults({from: this.account});
+      }).then(result => {
         console.log('results', result)
         this.setState({ YES: result[0].toNumber() });
         this.setState({ NO: result[1].toNumber() });
@@ -83,20 +98,28 @@ class App extends Component {
   }
 
   render() {
+
+    const vote = this.state.shouldDisableVotes
+      ? <h2>YOU VOTED: {this.state.myVote ? 'YES' : 'NO'}</h2>
+      : (
+        <div>
+          <button onClick={this.vote(true)}>YES</button>
+          <button onClick={this.vote(false)}>NO</button>
+        </div>
+      )
+
     return (
       <div className="App">
         <nav className="navbar pure-menu pure-menu-horizontal">
             <a href="#" className="pure-menu-heading pure-menu-link">Truffle Box</a>
         </nav>
-
         <main className="container">
           <div className="pure-g">
             <div className="pure-u-1-1">
               <h1>VOTE: YES - NO</h1>
               <p>YES: {this.state.YES}</p>
               <p>YES: {this.state.NO}</p>
-              <button onClick={this.vote(true)}>YES</button>
-              <button onClick={this.vote(false)}>NO</button>
+              {vote}
             </div>
           </div>
         </main>
