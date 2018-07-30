@@ -1,8 +1,8 @@
 # Voting DApp Test
 
-This test was created using [Truffle react-box](https://truffleframework.com/boxes/react)
+This example was created using [Truffle react-box](https://truffleframework.com/boxes/react)
 
-## In order to build and run example *LOCALLY*, run
+## In order to build and run this example *LOCALLY*, run
 1. `$ yarn install` or `npm install` depending on your preference
 2. `$ truffle develop`
 3. `truffle(develop)> compile` to create the json contract artifacts
@@ -11,7 +11,7 @@ This test was created using [Truffle react-box](https://truffleframework.com/box
 6. `yarn start` or `npm run start`
 
 ## TODO
-- [ ] Unit test for DarkRoom contract
+- [ ] Unit test for exercising DarkRoom contract
 - [ ] Vote cost
 - [ ] Improve FE error handling
 - [ ] Add alert messages for when an action is performed
