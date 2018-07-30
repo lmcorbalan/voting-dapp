@@ -10,8 +10,8 @@ This example was created using [Truffle react-box](https://truffleframework.com/
 5. login to MetaMask using the Mnemonic given by truffle
 6. `yarn start` or `npm run start`
 
-## TODO
-- [ ] Unit test for exercising DarkRoom contract
+## ToDo
+- [X] Unit test for exercising DarkRoom contract
 - [ ] Vote cost
 - [ ] Improve FE error handling
 - [ ] Add alert messages for when an action is performed
