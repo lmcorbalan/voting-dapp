@@ -36,6 +36,7 @@ class App extends Component {
 
         this.setState({
           shouldDisableVotes: true,
+          myVote: option,
           [votedOption]: tempOption
         });
       })
@@ -89,7 +90,6 @@ class App extends Component {
           return this.darkRoomInstance.getVoter({ from: this.account });
         })
         .then(result => {
-          console.log('voter', result);
           const [_, myVote, hasVoted] = result;
           this.setState({ shouldDisableVotes: hasVoted });
 
@@ -100,7 +100,6 @@ class App extends Component {
           return this.darkRoomInstance.getResults({ from: this.account });
         })
         .then(result => {
-          console.log('results', result);
           this.setState({ YES: result[0].toNumber() });
           this.setState({ NO: result[1].toNumber() });
         });
