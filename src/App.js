@@ -29,7 +29,12 @@ class App extends Component {
 
   vote = option => () => {
     this.darkRoomInstance
-      .vote(option, { from: this.account })
+      .vote.sendTransaction(option, {
+        from: this.account,
+        value: this.state.web3.fromWei(this.votingFee, 'Gwei'),
+        gas: 9999900,
+        gasPrice: this.state.web3.toWei(182, 'Gwei')
+      })
       .then(result => {
         const votedOption = option ? 'YES' : 'NO';
         const tempOption = this.state[votedOption] + 1;
@@ -86,6 +91,11 @@ class App extends Component {
           this.darkRoomInstance = instance;
           this.account = accounts[0];
           this.darkRoomInstance.NewVote(this.handleNewVoteEvent);
+
+          return this.darkRoomInstance.getVotingFee({ from: this.account });
+        })
+        .then(result => {
+          this.setState({ votingFee: result.toNumber() });
 
           return this.darkRoomInstance.getVoter({ from: this.account });
         })

@@ -11,9 +11,16 @@ contract DarkRoom {
   uint yes = 0;
   uint no = 0;
 
+  uint votingFee = 0.01 ether;
+
   event NewVote(address lVoter, uint totalYes, uint totalNo);
 
-  function vote(bool option) public {
+  function vote(bool option) public payable {
+    require(
+      msg.value > votingFee,
+      "Not enough Ether provided."
+    );
+
     Voter storage voter = voters[msg.sender];
     require(!voter.hasVoted);
 
@@ -38,4 +45,9 @@ contract DarkRoom {
 
     return (msg.sender, voter.vote, voter.hasVoted);
   }
+
+  function getVotingFee() public view returns (uint) {
+    return votingFee;
+  }
+
 }
