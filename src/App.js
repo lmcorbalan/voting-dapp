@@ -29,11 +29,10 @@ class App extends Component {
 
   vote = option => () => {
     this.darkRoomInstance
-      .vote.sendTransaction(option, {
+      .vote(option, {
         from: this.account,
-        value: this.state.web3.fromWei(this.votingFee, 'Gwei'),
-        gas: 9999900,
-        gasPrice: this.state.web3.toWei(182, 'Gwei')
+        value: this.state.votingFee,
+        gas: 99999
       })
       .then(result => {
         const votedOption = option ? 'YES' : 'NO';
@@ -135,7 +134,7 @@ class App extends Component {
         </div>
         <div>
           <button className="vote-btn vote-btn__yes" onClick={this.vote(true)}><span><IconVoteYes /></span></button>
-          <button className="vote-btn vote-btn__no" onClick={this.vote(true)}><span><IconVoteNo /></span></button>
+          <button className="vote-btn vote-btn__no" onClick={this.vote(false)}><span><IconVoteNo /></span></button>
         </div>
       </div>
     );
