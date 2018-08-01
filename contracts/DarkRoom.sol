@@ -17,7 +17,7 @@ contract DarkRoom {
 
   function vote(bool option) public payable {
     require(
-      msg.value > votingFee,
+      msg.value >= votingFee,
       "Not enough Ether provided."
     );
 
